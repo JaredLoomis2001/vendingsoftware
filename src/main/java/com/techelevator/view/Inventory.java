@@ -51,6 +51,7 @@ public class Inventory {
         for (Map.Entry<String, Product> product : products.entrySet()) {
             product.getValue().printProductInfo();
         }
+        System.out.println("---------------------------------------\n\n");
     }
 }
 
