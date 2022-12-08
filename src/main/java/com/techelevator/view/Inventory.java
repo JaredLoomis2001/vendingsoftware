@@ -24,16 +24,17 @@ import java.util.Scanner;
 public class Inventory {
     // HashMap kept placing the products out of order, so switched to LinkedHashMap
     // to keep entries in the order in which they are added to the map
-    private Map<String, Product> products = new LinkedHashMap<>();
+    private static Map<String, Product> items = new LinkedHashMap<>();
 
     public Inventory(File dataFile) {
         try (Scanner dataInput = new Scanner(dataFile)) {
             while (dataInput.hasNextLine()) {
                 // Splitting each line into an array
-                String[] items = dataInput.nextLine().split("\\|");
+                String[] itemArray = dataInput.nextLine().split("\\|");
                 // Array indexes will always be 0: Location, 1: Item Name, 2: Price, and 3: Type
                 // Location is used for the key, then a new Product is added as the value
-                products.put(items[0].toLowerCase(), new Product(items[0], items[1], new BigDecimal(Double.valueOf(items[2])), items[3]));
+                items.put(itemArray[0].toLowerCase(), new Product(itemArray[0], itemArray[1],
+                        new BigDecimal(Double.valueOf(itemArray[2])), itemArray[3]));
             }
         } catch (FileNotFoundException e) {
             System.out.println("File not found at path: " + dataFile.getAbsolutePath());
@@ -41,17 +42,17 @@ public class Inventory {
     }
 
     public Map<String, Product> getProducts() {
-        return products;
+        return items;
     }
 
     public void listProducts() {
         // Runs through each product in the inventory and lists its Location, Name, Price, and current stock
         System.out.printf("%-4s%-22s%-7s%5s\n","##","Product Name","Price","Qty.");
         System.out.println("---------------------------------------");
-        for (Map.Entry<String, Product> product : products.entrySet()) {
-            product.getValue().printProductInfo();
+        for (Map.Entry<String, Product> item : items.entrySet()) {
+            item.getValue().printProductInfo();
         }
-        System.out.println("---------------------------------------\n\n");
+        System.out.println("---------------------------------------\n");
     }
 }
 

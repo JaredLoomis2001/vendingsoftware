@@ -1,8 +1,9 @@
 package com.techelevator;
 
-import com.techelevator.view.DisplayVendingMachineItems;
+import com.techelevator.view.Inventory;
 import com.techelevator.view.Menu;
-import com.techelevator.view.PurchaseMenu;
+
+import java.io.File;
 
 public class VendingMachineCLI {
 
@@ -17,8 +18,8 @@ public class VendingMachineCLI {
 	private static final String[] PURCHASE_MENU_OPTIONS = { PURCHASE_MENU_FEED_MONEY,PURCHASE_MENU_SELECT,PURCHASE_MENU_FINISH_TRANSACTION};
 
 	private Menu menu;
-	private PurchaseMenu purchaseMenu = new PurchaseMenu(System.in, System.out);
-	private DisplayVendingMachineItems displayVendingMachineItems = new DisplayVendingMachineItems();
+	private File dataFile = new File("vendingmachine.csv"); // CSV File
+	private Inventory inv = new Inventory(dataFile); // Inventory made with CSV File
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
 	}
@@ -29,11 +30,10 @@ public class VendingMachineCLI {
 
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				// display vending machine items
-				displayVendingMachineItems.displayItems();
+				inv.listProducts();
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
-				this.purchaseMenu = purchaseMenu;
-				String purchaseChoice = (String) purchaseMenu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+				String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
 			} else {
 				System.exit(0);
