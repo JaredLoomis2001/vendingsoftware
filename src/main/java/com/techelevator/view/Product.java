@@ -25,7 +25,11 @@ public class Product {
 
     public void printProductInfo(){
         // Prints a product's location, name, price, and current stock
-        System.out.printf("%-4s%-22s$%-6.2f%5d\n", location, name, price, inStock);
+        if (inStock >= 1) {
+            System.out.printf("%-4s%-22s$%-6.2f%5d\n", location, name, price, inStock);
+        } else {
+            System.out.printf("%-4s%-22s$%-6.2f%s\n", location, name, price, "SOLD OUT");
+        }
     }
 
     public String getLocation() {
