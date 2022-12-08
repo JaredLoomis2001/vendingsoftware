@@ -32,6 +32,7 @@ public class Product {
         }
     }
 
+    // Getters
     public String getLocation() {
         return location;
     }
@@ -50,6 +51,11 @@ public class Product {
 
     public int getStock() {
         return inStock;
+    }
+
+    // Setters (inStock and numSold should be the only variables that change)
+    public void setInStock(int inStock) {
+        this.inStock = inStock;
     }
 
     public void setNumSold(int numSold) {
