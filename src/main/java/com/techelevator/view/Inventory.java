@@ -33,7 +33,7 @@ public class Inventory {
                 String[] items = dataInput.nextLine().split("\\|");
                 // Array indexes will always be 0: Location, 1: Item Name, 2: Price, and 3: Type
                 // Location is used for the key, then a new Product is added as the value
-                products.put(items[0], new Product(items[0], items[1], new BigDecimal(Double.valueOf(items[2])), items[3]));
+                products.put(items[0].toLowerCase(), new Product(items[0], items[1], new BigDecimal(Double.valueOf(items[2])), items[3]));
             }
         } catch (FileNotFoundException e) {
             System.out.println("File not found at path: " + dataFile.getAbsolutePath());
