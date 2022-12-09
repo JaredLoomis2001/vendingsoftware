@@ -50,4 +50,12 @@ public class Menu {
 		out.print(System.lineSeparator() + "Please choose an option >>> ");
 		out.flush();
 	}
+
+
+	//method to call upon and prompt the user for their amount desired to input
+	public double getFedMoney () {
+		out.println("Please give the amount you wish to feed in format (0.00): ");
+		double moneyFed = Double.parseDouble(in.nextLine());
+		return moneyFed;
+	}
 }
