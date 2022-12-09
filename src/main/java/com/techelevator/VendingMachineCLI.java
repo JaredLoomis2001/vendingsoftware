@@ -48,6 +48,15 @@ public class VendingMachineCLI {
 						customer.feedMoney(money);
 						System.out.println(customer.getCurrentBalance());
 					}
+				else if(purchaseChoice.equals(PURCHASE_MENU_SELECT)) {
+					//display vending machine items and select product
+					inv.listProducts();
+
+				}else if(purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)){
+					//do finish transaction
+
+
+				}
 			} else {
 				System.exit(0);
 			}
