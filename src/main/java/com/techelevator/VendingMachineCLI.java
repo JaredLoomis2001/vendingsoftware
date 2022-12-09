@@ -3,6 +3,7 @@ package com.techelevator;
 import com.techelevator.view.Customer;
 import com.techelevator.view.Inventory;
 import com.techelevator.view.Menu;
+import com.techelevator.view.PurchaseProcess;
 
 import java.io.File;
 
@@ -23,6 +24,8 @@ public class VendingMachineCLI {
 	private Menu menu;
 	private File dataFile = new File("vendingmachine.csv"); // CSV File
 	private Inventory inv = new Inventory(dataFile); // Inventory made with CSV File
+
+	PurchaseProcess purchaseProcess = new PurchaseProcess(System.in, System.out); //Purchase process Implementation
 
 	private Customer customer = new Customer(); //new customer to hold balance for purchases
 	public VendingMachineCLI(Menu menu) {
@@ -52,6 +55,7 @@ public class VendingMachineCLI {
 				else if(purchaseChoice.equals(PURCHASE_MENU_SELECT)) {
 					//display vending machine items and select product
 					inv.listProducts();
+					purchaseProcess.purchaseProduct(dataFile);
 
 				}else if(purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)){
 					//do finish transaction
