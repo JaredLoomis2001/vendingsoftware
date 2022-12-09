@@ -46,6 +46,7 @@ public class Inventory {
     }
 
     public void listProducts() {
+        // ***NEED TO ADD CURRENT BALANCE***
         // Runs through each product in the inventory and lists its Location, Name, Price, and current stock
         System.out.printf("%-4s%-22s%-7s%5s\n","##","Product Name","Price","Qty.");
         System.out.println("---------------------------------------");

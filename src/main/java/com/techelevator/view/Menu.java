@@ -53,10 +53,5 @@ public class Menu {
 
 
 	//method to call upon and prompt the user for their amount desired to input
-	public double getFedMoney () {
-		out.print(System.lineSeparator() + "Please give the amount you wish to feed in format (0.00): ");
-		out.flush();
-		double moneyFed = Double.parseDouble(in.nextLine());
-		return moneyFed;
-	}
+
 }

@@ -48,14 +48,14 @@ public class VendingMachineCLI {
 				// example in the README as well as how to go about looping back to the purchase menu after depositing
 				// to the balance
 				if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {
-						double money = menu.getFedMoney();
+						double money = purchaseProcess.getFedMoney();
 						customer.feedMoney(money);
 						System.out.println(customer.getCurrentBalance());
 					}
 				else if(purchaseChoice.equals(PURCHASE_MENU_SELECT)) {
 					//display vending machine items and select product
 					inv.listProducts();
-					purchaseProcess.purchaseProduct(dataFile);
+					purchaseProcess.purchaseProduct(inv);
 
 				}else if(purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)){
 					//do finish transaction
