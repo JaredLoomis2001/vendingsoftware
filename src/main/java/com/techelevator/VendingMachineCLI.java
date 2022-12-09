@@ -40,9 +40,10 @@ public class VendingMachineCLI {
 				// do purchase
 				String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
-				//check if user wants to feed money in, currently bugged to not prompt user for input on how much is wanted
-				//also having difficulty thinking how to display the current balance above the menu as it is shown in the example in the README
-				//as well as how to go about looping back to the purchase menu after depositing to the balance
+				//check if user wants to feed money in
+				//also having difficulty thinking how to display the current balance above the menu as it is shown in the
+				// example in the README as well as how to go about looping back to the purchase menu after depositing
+				// to the balance
 				if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {
 						double money = menu.getFedMoney();
 						customer.feedMoney(money);

@@ -1,15 +1,17 @@
 package com.techelevator.view;
 
 public class Customer {
-    public double getCurrentBalance() {
-        return currentBalance;
-    }
-
     private double currentBalance;
 
     public Customer () {
         this.currentBalance = 0;
     }
+
+    public double getCurrentBalance() {
+        return currentBalance;
+    }
+
+
 
     public void feedMoney (double amountFed) {
         this.currentBalance += amountFed;
