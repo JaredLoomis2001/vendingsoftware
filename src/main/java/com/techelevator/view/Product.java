@@ -34,12 +34,13 @@ public class Product {
         }
     }
 
-    /*public void buyItem() {
+    //Update stock details when dispensing product from vending machine
+    public void updateStockInfo() {
         if (inStock > 0) {
             inStock--;
             numSold++;
         }
-    }*/
+    }
 
     // Getters
     public String getSlotID() {

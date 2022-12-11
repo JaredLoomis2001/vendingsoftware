@@ -52,6 +52,4 @@ public class Menu {
 	}
 
 
-	//method to call upon and prompt the user for their amount desired to input
-
 }
