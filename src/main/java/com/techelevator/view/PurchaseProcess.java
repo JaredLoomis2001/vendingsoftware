@@ -53,7 +53,7 @@ public class PurchaseProcess {
 
                 //Update the customer balance , subtract price of product from customer balance
                 //when dispensing the product
-                customer.purchaseItem(prod.getPrice().doubleValue());
+                customer.purchaseItem(prod.getPrice());
                 out.println("customer bal " + customer.getCurrentBalance());
                 //Print appropriate message when dispensing product
                 printMessage(prod.getType());
@@ -96,7 +96,7 @@ public class PurchaseProcess {
         int dimes = 0;
         int penny = 0;
 
-        change = customer.getCurrentBalance();
+        change = customer.getCurrentBalance().doubleValue();
         while (change > 0) {
             if (change >= 0.25) {
                 quarters++;
