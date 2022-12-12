@@ -1,6 +1,6 @@
 package com.techelevator;
 
-import com.techelevator.view.Customer;
+import com.techelevator.view.VendingMachineBalance;
 import com.techelevator.view.Inventory;
 import com.techelevator.view.Menu;
 import com.techelevator.view.PurchaseProcess;
@@ -27,7 +27,7 @@ public class VendingMachineCLI {
 
     private PurchaseProcess purchaseProcess = new PurchaseProcess(System.in, System.out); //Purchase process Implementation
 
-    private Customer customer = new Customer(); //new customer to hold balance for purchases
+    private VendingMachineBalance vendingMachineBalance = new VendingMachineBalance(); //new vendingMachineBalance to hold balance for purchases
 
     public VendingMachineCLI(Menu menu) {
         this.menu = menu;
@@ -52,6 +52,9 @@ public class VendingMachineCLI {
 
     public void displayPurchaseMenu() {
         while (true) {
+
+            System.out.println("\nCurrent money provided: $" + vendingMachineBalance.getCurrentBalance());
+
             // do purchase
             String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
@@ -60,9 +63,9 @@ public class VendingMachineCLI {
             // example in the README as well as how to go about looping back to the purchase menu after depositing
             // to the balance
             if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {
-                BigDecimal money = purchaseProcess.getFedMoney();
-                customer.feedMoney(money);
-                System.out.println(customer.getCurrentBalance());
+                BigDecimal money = new BigDecimal(purchaseProcess.getFedMoney()) ;
+                vendingMachineBalance.feedMoney(money);
+                System.out.println(vendingMachineBalance.getCurrentBalance());
 
             } else if (purchaseChoice.equals(PURCHASE_MENU_SELECT)) {
 
@@ -70,13 +73,13 @@ public class VendingMachineCLI {
                 inv.listProducts();
 
 					/*Implement purchase process
-					Allow customer to select product,dispense product,update stock and balance
+					Allow vendingMachineBalance to select product,dispense product,update stock and balance
 					 */
-                purchaseProcess.purchaseProduct(inv, customer);
+                purchaseProcess.purchaseProduct(inv, vendingMachineBalance);
 
             } else if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
                 //do finish transaction
-                purchaseProcess.finishTransaction(customer);
+                purchaseProcess.finishTransaction(vendingMachineBalance);
                 return;
             }
         }

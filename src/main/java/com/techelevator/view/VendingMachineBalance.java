@@ -2,10 +2,10 @@ package com.techelevator.view;
 
 import java.math.BigDecimal;
 
-public class Customer {
+public class VendingMachineBalance {
     private BigDecimal currentBalance;
 
-    public Customer() {
+    public VendingMachineBalance() {
         this.currentBalance = new BigDecimal(0.00);
     }
 

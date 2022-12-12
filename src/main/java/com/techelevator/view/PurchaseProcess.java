@@ -1,11 +1,9 @@
 package com.techelevator.view;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -20,15 +18,15 @@ public class PurchaseProcess {
     }
 
     /*Implement purchase process
-    1.Show the list of products available and allow the customer to enter a code to select an item.
-    2.If the product code doesn't exist, the vending machine informs the customer
-    3.If a product is currently sold out, the vending machine informs the customer
-    4.If a customer selects a valid product, it's dispensed to the customer.
+    1.Show the list of products available and allow the vendingMachineBalance to enter a code to select an item.
+    2.If the product code doesn't exist, the vending machine informs the vendingMachineBalance
+    3.If a product is currently sold out, the vending machine informs the vendingMachineBalance
+    4.If a vendingMachineBalance selects a valid product, it's dispensed to the vendingMachineBalance.
     5.Dispensing an item prints the item name, cost, and the money remaining and a message
     6.After the machine dispenses the product, the machine must update its balance
-    accordingly and return the customer to the Purchase menu.
+    accordingly and return the vendingMachineBalance to the Purchase menu.
     */
-    public void purchaseProduct(Inventory inventory, Customer customer) {
+    public void purchaseProduct(Inventory inventory, VendingMachineBalance vendingMachineBalance) {
         out.println(System.lineSeparator() + "Enter the code of item to be dispensed");
         String code = in.nextLine();
 
@@ -47,15 +45,15 @@ public class PurchaseProcess {
                 out.println(itemMap.get(code.toLowerCase()).getName());
 
 
-                //Display details of the item selected by customer
+                //Display details of the item selected by vendingMachineBalance
                 prod.printProductInfo();
                 prod.updateStockInfo();
                 out.println(prod.getStock());
 
-                //Update the customer balance , subtract price of product from customer balance
+                //Update the vendingMachineBalance balance , subtract price of product from vendingMachineBalance balance
                 //when dispensing the product
-                customer.purchaseItem(prod.getPrice());
-                out.println("customer bal " + customer.getCurrentBalance());
+                vendingMachineBalance.purchaseItem(prod.getPrice());
+                out.println("vendingMachineBalance bal " + vendingMachineBalance.getCurrentBalance());
                 //Print appropriate message when dispensing product
                 printMessage(prod.getType());
 
@@ -85,23 +83,22 @@ public class PurchaseProcess {
         }
     }
 
-    public BigDecimal getFedMoney() {
+    public int getFedMoney() {
         out.println(System.lineSeparator() + "Please give the amount you wish to feed in format (0.00): ");
-        BigDecimal moneyFed = new BigDecimal(Double.parseDouble((in.nextLine())));
+        int moneyFed = Integer.parseInt(in.nextLine());
         return moneyFed;
     }
-    public  void finishTransaction(Customer customer) {
-      double change = 0;
+    public  void finishTransaction(VendingMachineBalance vendingMachineBalance) {
+      BigDecimal change = vendingMachineBalance.getCurrentBalance();
         int nickels = 0;
         int quarters = 0;
         int dimes = 0;
         int penny = 0;
 
-        change = customer.getCurrentBalance().doubleValue();
-        while (change > 0) {
+        while (change.compareTo(BigDecimal.valueOf(0)) > 0) {
             if (change >= 0.25) {
                 quarters++;
-                change -= 0.25;
+                change = change.subtract(BigDecimal.valueOf(0.25));
             } else if (change >= 0.10) {
                 dimes++;
                 change -= 0.10;
