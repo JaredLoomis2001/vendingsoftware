@@ -89,6 +89,33 @@ public class PurchaseProcess {
         double moneyFed = Double.parseDouble(in.nextLine());
         return moneyFed;
     }
+    public  void finishTransaction(Customer customer) {
+      double change = 0;
+        int nickels = 0;
+        int quarters = 0;
+        int dimes = 0;
+        int penny = 0;
+
+        change = customer.getCurrentBalance();
+        while (change > 0) {
+            if (change >= 0.25) {
+                quarters++;
+                change -= 0.25;
+            } else if (change >= 0.10) {
+                dimes++;
+                change -= 0.10;
+            } else if (change >= 0.05) {
+                nickels++;
+                change -= 0.05;
+            } else {
+                penny++;
+                change -= 0.01;
+            }
+        }
+
+        System.out.println("Dispensing Change: " + quarters +" Quarter(s) | " + dimes + " Dime(s) | " + nickels+ " Nickel(s) | " + penny + " Penny(s)");
+        System.out.println("Your balance is now: 0.00");
+    }
 }
 
 

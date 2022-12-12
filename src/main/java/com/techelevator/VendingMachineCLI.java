@@ -64,7 +64,7 @@ public class VendingMachineCLI {
 
                 } else if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
                     //do finish transaction
-
+                    purchaseProcess.finishTransaction(customer);
 
                 }
             } else {
