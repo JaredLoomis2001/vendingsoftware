@@ -40,39 +40,46 @@ public class VendingMachineCLI {
                 // display vending machine items
                 inv.listProducts();
             } else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-                // do purchase
-                String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
-
-                //check if user wants to feed money in
-                //also having difficulty thinking how to display the current balance above the menu as it is shown in the
-                // example in the README as well as how to go about looping back to the purchase menu after depositing
-                // to the balance
-                if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {
-                    double money = purchaseProcess.getFedMoney();
-                    customer.feedMoney(money);
-                    System.out.println(customer.getCurrentBalance());
-
-                } else if (purchaseChoice.equals(PURCHASE_MENU_SELECT)) {
-
-                    //display vending machine items
-                    inv.listProducts();
-
-					/*Implement purchase process
-					Allow customer to select product,dispense product,update stock and balance
-					 */
-                    purchaseProcess.purchaseProduct(inv,customer);
-
-                } else if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
-                    //do finish transaction
-                    purchaseProcess.finishTransaction(customer);
-
-                }
+                //Display the submenu
+                displayPurchaseMenu();
             } else {
                 System.exit(0);
             }
         }
     }
 
+
+    public void displayPurchaseMenu() {
+        while (true) {
+            // do purchase
+            String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+
+            //check if user wants to feed money in
+            //also having difficulty thinking how to display the current balance above the menu as it is shown in the
+            // example in the README as well as how to go about looping back to the purchase menu after depositing
+            // to the balance
+            if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {
+                double money = purchaseProcess.getFedMoney();
+                customer.feedMoney(money);
+                System.out.println(customer.getCurrentBalance());
+
+            } else if (purchaseChoice.equals(PURCHASE_MENU_SELECT)) {
+
+                //display vending machine items
+                inv.listProducts();
+
+					/*Implement purchase process
+					Allow customer to select product,dispense product,update stock and balance
+					 */
+                purchaseProcess.purchaseProduct(inv, customer);
+
+            } else if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
+                //do finish transaction
+                purchaseProcess.finishTransaction(customer);
+                return;
+            }
+        }
+    }
 
     public static void main(String[] args) {
         Menu menu = new Menu(System.in, System.out);
