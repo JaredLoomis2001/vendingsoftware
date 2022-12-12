@@ -6,6 +6,7 @@ import com.techelevator.view.Menu;
 import com.techelevator.view.PurchaseProcess;
 
 import java.io.File;
+import java.math.BigDecimal;
 
 public class VendingMachineCLI {
 
@@ -59,7 +60,7 @@ public class VendingMachineCLI {
             // example in the README as well as how to go about looping back to the purchase menu after depositing
             // to the balance
             if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {
-                double money = purchaseProcess.getFedMoney();
+                BigDecimal money = purchaseProcess.getFedMoney();
                 customer.feedMoney(money);
                 System.out.println(customer.getCurrentBalance());
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -26,6 +27,12 @@ public class Inventory {
     // to keep entries in the order in which they are added to the map
     private static Map<String, Product> items = new LinkedHashMap<>();
 
+
+    public Inventory(List<Product> productList) {
+        for (Product product : productList) {
+            items.put(product.getSlotID().toLowerCase(), product);
+        }
+    }
     public Inventory(File dataFile) {
         try (Scanner dataInput = new Scanner(dataFile)) {
             while (dataInput.hasNextLine()) {
@@ -49,11 +56,11 @@ public class Inventory {
         // ***NEED TO ADD CURRENT BALANCE***
         // Runs through each product in the inventory and lists its Location, Name, Price, and current stock
         System.out.printf("%-4s%-22s%-7s%5s\n", "##", "Product Name", "Price", "Qty.");
-        System.out.println("---------------------------------------");
+        System.out.print("---------------------------------------\n");
         for (Map.Entry<String, Product> item : items.entrySet()) {
             item.getValue().printProductInfo();
         }
-        System.out.println("---------------------------------------\n");
+        System.out.print("---------------------------------------\n\n");
     }
 }
 

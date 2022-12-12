@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -84,9 +85,9 @@ public class PurchaseProcess {
         }
     }
 
-    public double getFedMoney() {
+    public BigDecimal getFedMoney() {
         out.println(System.lineSeparator() + "Please give the amount you wish to feed in format (0.00): ");
-        double moneyFed = Double.parseDouble(in.nextLine());
+        BigDecimal moneyFed = new BigDecimal(Double.parseDouble((in.nextLine())));
         return moneyFed;
     }
     public  void finishTransaction(Customer customer) {
