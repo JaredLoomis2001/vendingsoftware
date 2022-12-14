@@ -1,9 +1,9 @@
 package com.techelevator.view;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -89,30 +89,78 @@ public class PurchaseProcess {
         return moneyFed;
     }
     public  void finishTransaction(VendingMachineBalance vendingMachineBalance) {
-      BigDecimal change = vendingMachineBalance.getCurrentBalance();
+
+        BigDecimal change = vendingMachineBalance.getCurrentBalance() ;
         int nickels = 0;
         int quarters = 0;
         int dimes = 0;
         int penny = 0;
-
-        while (change.compareTo(BigDecimal.valueOf(0)) > 0) {
-            if (change.doubleValue() >= 0.25) {
+        // Turns big decimal in to a double and then into a number easier to subtract from
+        // Now the balance is turned into a whole number which will give more precise coins
+        double coins = change.doubleValue() * 100;
+        // try {
+        while (coins > 0) {
+            if (coins >= 25) {
                 quarters++;
-                change = change.subtract(BigDecimal.valueOf(0.25));
-            } else if (change.doubleValue() >= 0.10) {
+                coins -= 25;
+            } else if (coins >= 10) {
                 dimes++;
-                change.subtract(BigDecimal.valueOf(0.10));
-            } else if (change.doubleValue() >= 0.05) {
+                coins -= 10;
+            } else if (coins >= 5) {
                 nickels++;
-                change.subtract(BigDecimal.valueOf(0.05));
-            } else {
+                coins -= 5;
+            } else if (coins >=1) {
                 penny++;
-                change.subtract(BigDecimal.valueOf(0.01));
+                coins -= 1;
+            } else {
+                coins = 0;
             }
+
         }
+        //  }
+        // trying to catch any errors that might occur dispensing change
+        // catch (Exception e){
+        //   System.out.println("There was an error dispensing your change");
+        //  }
 
         System.out.println("Dispensing Change: " + quarters +" Quarter(s) | " + dimes + " Dime(s) | " + nickels+ " Nickel(s) | " + penny + " Penny(s)");
-        System.out.println("Your balance is now: 0.00");
+        // needs setBalance to return balance to 0
+        System.out.println("Your balance is now: $0.00" );
+    }
+    public  void logTransaction (VendingMachineBalance balance , String message) {
+        File log = new File("Log.txt");
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+
+
+        if (!log.exists()) {
+            try {
+                log.createNewFile();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            try (PrintWriter logging = new PrintWriter(new FileOutputStream(log, true))) {
+
+                logging.println(dateFormat.format(date) + message + balance.getCurrentBalance());
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+
+            }
+
+        }
+        if (log.exists()) {
+            try (PrintWriter logging = new PrintWriter(new FileOutputStream(log, true))) {
+                logging.println(dateFormat.format(date)+  message +  balance.getCurrentBalance());
+                //new log
+
+            } catch (Exception e) {
+                System.out.println("There was a problem writing to the log file.");
+                System.out.println(e.getMessage());
+            }
+
+
+        }
     }
 }
 
