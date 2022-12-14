@@ -2,6 +2,7 @@ package com.techelevator.view;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -11,6 +12,7 @@ public class PurchaseProcess {
     private PrintWriter out;
     private Scanner in;
 
+    private static PrintWriter dataOutput = null;// PrintWriter object for logging is created
 
     public PurchaseProcess(InputStream input, OutputStream output) {
         this.out = new PrintWriter(output, true);
@@ -41,9 +43,6 @@ public class PurchaseProcess {
                 out.println("Item is out of stock");
                 //Do the below process only if item is in stock
             else {
-                out.println("code " + code);
-                out.println(itemMap.get(code.toLowerCase()).getName());
-
 
                 //Display details of the item selected by vendingMachineBalance
                 prod.printProductInfo();
@@ -53,9 +52,17 @@ public class PurchaseProcess {
                 //Update the vendingMachineBalance balance , subtract price of product from vendingMachineBalance balance
                 //when dispensing the product
                 vendingMachineBalance.purchaseItem(prod.getPrice());
-                out.println("vendingMachineBalance bal " + vendingMachineBalance.getCurrentBalance());
+
                 //Print appropriate message when dispensing product
                 printMessage(prod.getType());
+
+                //Log All transactions to Log.txt
+                //change the currency format to log inside Log.txt
+                NumberFormat nf = NumberFormat.getCurrencyInstance();
+                double balance = prod.getPrice().doubleValue();
+                String currency = nf.format(balance);
+                PurchaseProcess.logTransaction(" "+itemMap.get(code.toLowerCase()).getName() + "  " + code
+                        + "  " + currency    + "  " + vendingMachineBalance.balanceString());
 
             }
         }
@@ -65,22 +72,27 @@ public class PurchaseProcess {
     type of the item dispensed from vending machine
      */
     public void printMessage(String type) {
-        switch (type) {
-            case "Chip":
-                out.println("Crunch Crunch, Yum!");
-                break;
-            case "Candy":
-                out.println("Munch Munch, Yum!");
-                break;
-            case "Drink":
-                out.println("Glug Glug, Yum!");
-                break;
-            case "Gum":
-                out.println("Chew Chew, Yum!");
-                break;
-            default:
-                throw new RuntimeException("Invalid code");
+        try {
+            switch (type) {
+                case "Chip":
+                    out.println("Crunch Crunch, Yum!");
+                    break;
+                case "Candy":
+                    out.println("Munch Munch, Yum!");
+                    break;
+                case "Drink":
+                    out.println("Glug Glug, Yum!");
+                    break;
+                case "Gum":
+                    out.println("Chew Chew, Yum!");
+                    break;
+                default:
+                    throw new RuntimeException("Invalid code");
+            }
+        } catch (RuntimeException exception) {
+            out.println("Invalid code entered");
         }
+
     }
 
     public int getFedMoney() {
@@ -88,9 +100,10 @@ public class PurchaseProcess {
         int moneyFed = Integer.parseInt(in.nextLine());
         return moneyFed;
     }
-    public  void finishTransaction(VendingMachineBalance vendingMachineBalance) {
 
-        BigDecimal change = vendingMachineBalance.getCurrentBalance() ;
+    public void finishTransaction(VendingMachineBalance vendingMachineBalance) {
+
+        BigDecimal change = vendingMachineBalance.getCurrentBalance();
         int nickels = 0;
         int quarters = 0;
         int dimes = 0;
@@ -109,7 +122,7 @@ public class PurchaseProcess {
             } else if (coins >= 5) {
                 nickels++;
                 coins -= 5;
-            } else if (coins >=1) {
+            } else if (coins >= 1) {
                 penny++;
                 coins -= 1;
             } else {
@@ -123,45 +136,49 @@ public class PurchaseProcess {
         //   System.out.println("There was an error dispensing your change");
         //  }
 
-        System.out.println("Dispensing Change: " + quarters +" Quarter(s) | " + dimes + " Dime(s) | " + nickels+ " Nickel(s) | " + penny + " Penny(s)");
+        System.out.println("Dispensing Change: " + quarters + " Quarter(s) | " + dimes + " Dime(s) | " + nickels + " Nickel(s) | " + penny + " Penny(s)");
         // needs setBalance to return balance to 0
-        System.out.println("Your balance is now: $0.00" );
+        System.out.println("Your balance is now: $0.00");
+
+        //log transaction to log.txt
+        PurchaseProcess.logTransaction(" GIVE CHANGE : " + vendingMachineBalance.balanceString());
     }
-    public  void logTransaction (VendingMachineBalance balance , String message) {
-        File log = new File("Log.txt");
+
+    /*
+     The vending machine logs all transactions to prevent theft from the vending machine.
+     Each purchase must generate a line in a file called Log.txt.
+     The first dollar amount is the amount deposited, spent, or given as change.
+     The second dollar amount is the new balance.
+      */
+    public static void logTransaction(String message) {
+
         Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
 
+        try {
 
-        if (!log.exists()) {
-            try {
-                log.createNewFile();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-            try (PrintWriter logging = new PrintWriter(new FileOutputStream(log, true))) {
-
-                logging.println(dateFormat.format(date) + message + balance.getCurrentBalance());
-
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-
+            File logFile = new File("Log.txt");
+            if (!logFile.exists())
+                logFile.createNewFile();
+            if (dataOutput == null) {
+                dataOutput = new PrintWriter(
+                        // Passing true to the FileOutputStream constructor says to append
+                        new FileOutputStream(logFile, true));
             }
 
+            dataOutput.print(dateFormat.format(date));
+            dataOutput.println(" " + message);
+            dataOutput.flush();
+
+
+        } catch (FileNotFoundException e) {
+            System.err.println("Exception  :" + e.getMessage());
+        } catch (Exception exception) {
+            System.err.println("Exception  :" + exception.getMessage());
         }
-        if (log.exists()) {
-            try (PrintWriter logging = new PrintWriter(new FileOutputStream(log, true))) {
-                logging.println(dateFormat.format(date)+  message +  balance.getCurrentBalance());
-                //new log
 
-            } catch (Exception e) {
-                System.out.println("There was a problem writing to the log file.");
-                System.out.println(e.getMessage());
-            }
-
-
-        }
     }
+
 }
 
 

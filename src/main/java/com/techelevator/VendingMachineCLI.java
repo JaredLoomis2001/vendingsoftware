@@ -68,7 +68,12 @@ public class VendingMachineCLI {
             if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {
                 BigDecimal money = new BigDecimal(purchaseProcess.getFedMoney()) ;
                 vendingMachineBalance.feedMoney(money);
-                System.out.println(vendingMachineBalance.getCurrentBalance());
+
+                //log all transactions to Log.txt
+                NumberFormat nf = NumberFormat.getCurrencyInstance();
+                double balance = money.doubleValue();
+                String currency = nf.format(balance);
+                PurchaseProcess.logTransaction(" FEED MONEY : "+currency + " "+vendingMachineBalance.balanceString());
 
             } else if (purchaseChoice.equals(PURCHASE_MENU_SELECT)) {
 
@@ -83,7 +88,7 @@ public class VendingMachineCLI {
             } else if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
                 //do finish transaction
                 purchaseProcess.finishTransaction(vendingMachineBalance);
-                purchaseProcess.logTransaction(vendingMachineBalance,"give change");
+                //Return to Main menu
                 return;
             }
         }
