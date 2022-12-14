@@ -96,18 +96,18 @@ public class PurchaseProcess {
         int penny = 0;
 
         while (change.compareTo(BigDecimal.valueOf(0)) > 0) {
-            if (change >= 0.25) {
+            if (change.doubleValue() >= 0.25) {
                 quarters++;
                 change = change.subtract(BigDecimal.valueOf(0.25));
-            } else if (change >= 0.10) {
+            } else if (change.doubleValue() >= 0.10) {
                 dimes++;
-                change -= 0.10;
-            } else if (change >= 0.05) {
+                change.subtract(BigDecimal.valueOf(0.10));
+            } else if (change.doubleValue() >= 0.05) {
                 nickels++;
-                change -= 0.05;
+                change.subtract(BigDecimal.valueOf(0.05));
             } else {
                 penny++;
-                change -= 0.01;
+                change.subtract(BigDecimal.valueOf(0.01));
             }
         }
 
