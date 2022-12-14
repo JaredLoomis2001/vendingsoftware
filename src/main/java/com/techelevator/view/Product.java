@@ -1,6 +1,7 @@
 package com.techelevator.view;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /* This class is used to create Product objects. A constructor is provided to set each product's
 * slotID within the vending machine, its name, its price, and its type. All products start with 5 items
@@ -18,10 +19,11 @@ public class Product {
     private int inStock;
 
     public Product(String slotID, String name, BigDecimal price, String type) {
-        this.slotID = slotID;
-        this.name = name;
-        this.price = price;
-        this.type = type;
+        // Objects.requireNonNull throws a NullPointerException if the Object contains a null value
+        this.slotID = Objects.requireNonNull(slotID, "Slot ID can't be null or empty.");
+        this.name = Objects.requireNonNull(name, "Name can't be null or empty.");
+        this.price = Objects.requireNonNull(price, "Price can't be null or empty.");
+        this.type = Objects.requireNonNull(type, "Type can't be null or empty.");
         this.inStock = STARTING_STOCK;
     }
 

@@ -29,6 +29,7 @@ public class PurchaseProcess {
     accordingly and return the vendingMachineBalance to the Purchase menu.
     */
     public void purchaseProduct(Inventory inventory, VendingMachineBalance vendingMachineBalance) {
+        // ***Add exception for insufficient balance
         out.println(System.lineSeparator() + "Enter the code of item to be dispensed");
         String code = in.nextLine();
 
@@ -61,7 +62,7 @@ public class PurchaseProcess {
                 NumberFormat nf = NumberFormat.getCurrencyInstance();
                 double balance = prod.getPrice().doubleValue();
                 String currency = nf.format(balance);
-                PurchaseProcess.logTransaction(" "+itemMap.get(code.toLowerCase()).getName() + "  " + code
+                PurchaseProcess.logTransaction(" "+ itemMap.get(code.toLowerCase()).getName() + "  " + prod.getSlotID()
                         + "  " + currency    + "  " + vendingMachineBalance.balanceString());
 
             }
@@ -104,6 +105,7 @@ public class PurchaseProcess {
     public void finishTransaction(VendingMachineBalance vendingMachineBalance) {
 
         BigDecimal change = vendingMachineBalance.getCurrentBalance();
+        String changeString = vendingMachineBalance.balanceString();
         int nickels = 0;
         int quarters = 0;
         int dimes = 0;
@@ -138,10 +140,13 @@ public class PurchaseProcess {
 
         System.out.println("Dispensing Change: " + quarters + " Quarter(s) | " + dimes + " Dime(s) | " + nickels + " Nickel(s) | " + penny + " Penny(s)");
         // needs setBalance to return balance to 0
-        System.out.println("Your balance is now: $0.00");
+        vendingMachineBalance.setCurrentBalance(BigDecimal.valueOf(0.00));
+        System.out.println("Your balance is now: " + vendingMachineBalance.balanceString());
 
         //log transaction to log.txt
-        PurchaseProcess.logTransaction(" GIVE CHANGE : " + vendingMachineBalance.balanceString());
+        PurchaseProcess.logTransaction(" GIVE CHANGE : " + changeString + " " + vendingMachineBalance.balanceString());
+
+
     }
 
     /*

@@ -11,7 +11,7 @@ import java.util.Scanner;
 /* This class is used to create the vending machine's inventory. It populates a LinkedHashMap with a dataFile by looping
  * through each line in the dataFile and splitting the line into a '|' delimited array. The array then contains 4 indexes:
  *
- * 0 - The item's location in the machine
+ * 0 - The item's slotID in the machine
  * 1 - The item's name
  * 2 - The item's price
  * 3 - The item's type
@@ -27,12 +27,14 @@ public class Inventory {
     // to keep entries in the order in which they are added to the map
     private static Map<String, Product> items = new LinkedHashMap<>();
 
-
+    // Constructor used for testing purposes
     public Inventory(List<Product> productList) {
         for (Product product : productList) {
             items.put(product.getSlotID().toLowerCase(), product);
         }
     }
+
+    // Constructor for VendingMachineCLI
     public Inventory(File dataFile) {
         try (Scanner dataInput = new Scanner(dataFile)) {
             while (dataInput.hasNextLine()) {
@@ -53,14 +55,17 @@ public class Inventory {
     }
 
     public void listProducts() {
-        // ***NEED TO ADD CURRENT BALANCE***
-        // Runs through each product in the inventory and lists its Location, Name, Price, and current stock
-        System.out.printf("%-4s%-22s%-7s%5s\n", "##", "Product Name", "Price", "Qty.");
-        System.out.print("---------------------------------------\n");
-        for (Map.Entry<String, Product> item : items.entrySet()) {
-            item.getValue().printProductInfo();
-        }
-        System.out.print("---------------------------------------\n\n");
+        // Runs through each product in the inventory and lists its slotID, Name, Price, and current stock
+            System.out.printf("%-4s%-22s%-7s%5s\n", "##", "Product Name", "Price", "Qty.");
+            System.out.print("---------------------------------------\n");
+            for (Map.Entry<String, Product> item : items.entrySet()) {
+                if (item.getKey() != null && item.getValue() != null) {
+                    item.getValue().printProductInfo();
+                } else {
+                    throw new NullPointerException("Null value found in current inventory.");
+                }
+            }
+            System.out.print("---------------------------------------\n\n");
     }
 }
 

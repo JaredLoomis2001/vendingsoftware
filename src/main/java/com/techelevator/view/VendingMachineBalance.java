@@ -17,8 +17,12 @@ public class VendingMachineBalance {
         return currentBalance;
     }
 
+    public void setCurrentBalance(BigDecimal currentBalance) {
+        this.currentBalance = currentBalance;
+    }
 
     public void feedMoney(BigDecimal amountFed) {
+        // ***Add exception for negatives
         this.currentBalance = currentBalance.add(amountFed);
     }
 
