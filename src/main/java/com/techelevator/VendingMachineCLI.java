@@ -7,6 +7,8 @@ import com.techelevator.view.PurchaseProcess;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class VendingMachineCLI {
 
@@ -51,9 +53,10 @@ public class VendingMachineCLI {
 
 
     public void displayPurchaseMenu() {
+
         while (true) {
 
-            System.out.println("\nCurrent money provided: $" + vendingMachineBalance.getCurrentBalance());
+            System.out.println("\nCurrent money provided: " + vendingMachineBalance.balanceString());
 
             // do purchase
             String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);

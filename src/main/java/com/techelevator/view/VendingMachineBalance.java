@@ -1,6 +1,10 @@
 package com.techelevator.view;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+
+//This class is to make things easier and hold all the values for the money in machine,
+// including a method to change the balance when an item is purchased
 
 public class VendingMachineBalance {
     private BigDecimal currentBalance;
@@ -24,7 +28,13 @@ public class VendingMachineBalance {
         if (priceOfItem.compareTo(this.currentBalance) <= 0)
             this.currentBalance =(currentBalance.subtract(priceOfItem));
     }
-    //This class is to make things easier and hold all the values for the money in machine
-    // for whoever works on Finish Transaction to easier, including a method to change the balance when an item is purchased
+
+    // Change balance to a currency formatted string
+    public String balanceString() {
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        double balance = currentBalance.doubleValue();
+        String currency = nf.format(balance);
+        return currency;
+    }
 
 }
