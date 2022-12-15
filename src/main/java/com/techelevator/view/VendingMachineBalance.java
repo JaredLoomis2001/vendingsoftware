@@ -22,8 +22,10 @@ public class VendingMachineBalance {
     }
 
     public void feedMoney(BigDecimal amountFed) {
-        // ***Add exception for negatives
-        this.currentBalance = currentBalance.add(amountFed);
+        if (amountFed.compareTo(BigDecimal.valueOf(1)) < 0) {
+            throw new InvalidMoneyException("You must feed money in whole dollar amounts.");
+        }
+           this.currentBalance = currentBalance.add(amountFed);
     }
 
     //Update customer balance,subtract the price of item from customer balance
