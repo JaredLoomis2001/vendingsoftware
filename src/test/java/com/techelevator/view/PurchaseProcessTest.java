@@ -20,7 +20,7 @@ public class PurchaseProcessTest {
     private Product product;
 
     private Inventory inv;
-    private VendingMachineBalance vendingMachineBalance;
+    private VendingMachineBalance vendingMachineBalance = new VendingMachineBalance();
 
 
     @Before
@@ -63,14 +63,22 @@ public class PurchaseProcessTest {
         }
     }
 
-    @Test
-    public void purchaseProcess_Test_PurchaseProduct_OUT_OF_STOCK(){
 
-    }
 
     @Test
     public void PurchaseProcess_TEST_finishTransaction(){
+        input   =   new ByteArrayInputStream("A1\n".getBytes());
+        output  =    new ByteArrayOutputStream();
 
+
+        vendingMachineBalance.setCurrentBalance(BigDecimal.valueOf(1.10));
+        PrintStream printStream = new PrintStream(output,true);
+        PurchaseProcess purchaseProcess = new PurchaseProcess(input , printStream);
+        purchaseProcess.finishTransaction(vendingMachineBalance);
+        String expected = "Dispensing Change: 4 Quarter(s) | 1 Dime(s) | 0 Nickel(s) | 0 Penny(s)\r\n";
+        String expectedBalance = "Your balance is now: $0.00\r\n";
+
+       Assert.assertEquals(expected + expectedBalance, outputStreamCaptor.toString());
     }
 
 
