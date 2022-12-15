@@ -45,10 +45,10 @@ public class PurchaseProcess {
                 //Do the below process only if item is in stock
             else {
 
-                //Display details of the item selected by vendingMachineBalance
-                prod.printProductInfo();
+                //Display details of the item selected by customer
+                System.out.printf("%-4s%-22s$%-6.2f\n", prod.getSlotID(), prod.getName(),prod.getPrice());
+                //Update the stock details of the item selected by customer
                 prod.updateStockInfo();
-                out.println(prod.getStock());
 
                 //Update the vendingMachineBalance balance , subtract price of product from vendingMachineBalance balance
                 //when dispensing the product
@@ -62,7 +62,7 @@ public class PurchaseProcess {
                 NumberFormat nf = NumberFormat.getCurrencyInstance();
                 double balance = prod.getPrice().doubleValue();
                 String currency = nf.format(balance);
-                PurchaseProcess.logTransaction(" "+ itemMap.get(code.toLowerCase()).getName() + "  " + prod.getSlotID()
+                PurchaseProcess.logTransaction(" "+ prod.getName() + "  " + prod.getSlotID()
                         + "  " + currency    + "  " + vendingMachineBalance.balanceString());
 
             }
@@ -88,9 +88,9 @@ public class PurchaseProcess {
                     out.println("Chew Chew, Yum!");
                     break;
                 default:
-                    throw new RuntimeException("Invalid code");
+                    throw new IllegalArgumentException("Invalid code");
             }
-        } catch (RuntimeException exception) {
+        } catch (IllegalArgumentException exception) {
             out.println("Invalid code entered");
         }
 
