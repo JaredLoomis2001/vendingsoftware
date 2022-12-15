@@ -28,7 +28,9 @@ public class PurchaseProcess {
     6.After the machine dispenses the product, the machine must update its balance
     accordingly and return the vendingMachineBalance to the Purchase menu.
     */
-    public void purchaseProduct(Inventory inventory, VendingMachineBalance vendingMachineBalance) throws InsufficientFundsException, OutOfStockException, InvalidSlotIdException {
+
+    public void purchaseProduct(Inventory inventory, VendingMachineBalance vendingMachineBalance) throws
+            InsufficientFundsException, OutOfStockException, InvalidSlotIdException {
 
         out.println(System.lineSeparator() + "Enter the code of item to be dispensed");
         String code = in.nextLine();
