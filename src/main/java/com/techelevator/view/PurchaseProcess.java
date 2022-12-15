@@ -28,43 +28,52 @@ public class PurchaseProcess {
     6.After the machine dispenses the product, the machine must update its balance
     accordingly and return the vendingMachineBalance to the Purchase menu.
     */
-    public void purchaseProduct(Inventory inventory, VendingMachineBalance vendingMachineBalance) {
-        // ***Add exception for insufficient balance
+    public void purchaseProduct(Inventory inventory, VendingMachineBalance vendingMachineBalance) throws InsufficientFundsException, OutOfStockException, InvalidSlotIdException {
+
         out.println(System.lineSeparator() + "Enter the code of item to be dispensed");
         String code = in.nextLine();
 
         Map<String, Product> itemMap = inventory.getProducts();
 
         if (!itemMap.containsKey(code.toLowerCase())) {
-            out.println("Invalid slot id entered " + code);
+            throw new InvalidSlotIdException("Invalid slotID : " + code + " .Enter valid slotID");
 
         } else {
             Product prod = itemMap.get(code.toLowerCase());
+
+            //Throw out of stock exception ,if the item is not in stock
             if (prod.getStock() < 1)
-                out.println("Item is out of stock");
+                throw new OutOfStockException(prod.getName() +" is out of stock");
+
                 //Do the below process only if item is in stock
             else {
 
-                //Display details of the item selected by vendingMachineBalance
-                prod.printProductInfo();
-                prod.updateStockInfo();
-                out.println(prod.getStock());
+                //Display details of the item selected by customer
+                System.out.printf("%-4s%-22s$%-6.2f\n", prod.getSlotID(), prod.getName(), prod.getPrice());
 
-                //Update the vendingMachineBalance balance , subtract price of product from vendingMachineBalance balance
-                //when dispensing the product
-                vendingMachineBalance.purchaseItem(prod.getPrice());
+                if ((prod.getPrice().compareTo(vendingMachineBalance.getCurrentBalance()) < 1)) {
+                    //Update the stock details of the item selected by customer
+                    prod.updateStockInfo();
 
-                //Print appropriate message when dispensing product
-                printMessage(prod.getType());
+                    //Update the vendingMachineBalance balance , subtract price of product from vendingMachineBalance balance
+                    //when dispensing the product
+                    vendingMachineBalance.purchaseItem(prod.getPrice());
 
-                //Log All transactions to Log.txt
-                //change the currency format to log inside Log.txt
-                NumberFormat nf = NumberFormat.getCurrencyInstance();
-                double balance = prod.getPrice().doubleValue();
-                String currency = nf.format(balance);
-                PurchaseProcess.logTransaction(" "+ itemMap.get(code.toLowerCase()).getName() + "  " + prod.getSlotID()
-                        + "  " + currency    + "  " + vendingMachineBalance.balanceString());
+                    //Print appropriate message when dispensing product
+                    printMessage(prod.getType());
 
+                    //Log All transactions to Log.txt
+                    //change the currency format to log inside Log.txt
+                    NumberFormat nf = NumberFormat.getCurrencyInstance();
+                    double balance = prod.getPrice().doubleValue();
+                    String currency = nf.format(balance);
+                    PurchaseProcess.logTransaction(" " + prod.getName() + "  " + prod.getSlotID()
+                            + "  " + currency + "  " + vendingMachineBalance.balanceString());
+
+                } else {
+
+                    throw new InsufficientFundsException("Customer does not have enough Money.Transaction not allowed ");
+                }
             }
         }
     }
@@ -88,9 +97,9 @@ public class PurchaseProcess {
                     out.println("Chew Chew, Yum!");
                     break;
                 default:
-                    throw new RuntimeException("Invalid code");
+                    throw new IllegalArgumentException("Invalid code");
             }
-        } catch (RuntimeException exception) {
+        } catch (IllegalArgumentException exception) {
             out.println("Invalid code entered");
         }
 
