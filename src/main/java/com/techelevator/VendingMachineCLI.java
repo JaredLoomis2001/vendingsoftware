@@ -1,9 +1,6 @@
 package com.techelevator;
 
-import com.techelevator.view.VendingMachineBalance;
-import com.techelevator.view.Inventory;
-import com.techelevator.view.Menu;
-import com.techelevator.view.PurchaseProcess;
+import com.techelevator.view.*;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -66,14 +63,14 @@ public class VendingMachineCLI {
             // example in the README as well as how to go about looping back to the purchase menu after depositing
             // to the balance
             if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {
-                BigDecimal money = new BigDecimal(purchaseProcess.getFedMoney()) ;
+                BigDecimal money = new BigDecimal(purchaseProcess.getFedMoney());
                 vendingMachineBalance.feedMoney(money);
 
                 //log all transactions to Log.txt
                 NumberFormat nf = NumberFormat.getCurrencyInstance();
                 double balance = money.doubleValue();
                 String currency = nf.format(balance);
-                PurchaseProcess.logTransaction(" FEED MONEY : "+currency + " "+vendingMachineBalance.balanceString());
+                PurchaseProcess.logTransaction(" FEED MONEY : " + currency + " " + vendingMachineBalance.balanceString());
 
             } else if (purchaseChoice.equals(PURCHASE_MENU_SELECT)) {
 
@@ -83,7 +80,13 @@ public class VendingMachineCLI {
 					/*Implement purchase process
 					Allow vendingMachineBalance to select product,dispense product,update stock and balance
 					 */
-                purchaseProcess.purchaseProduct(inv, vendingMachineBalance);
+                try {
+                    purchaseProcess.purchaseProduct(inv, vendingMachineBalance);
+                } catch (InsufficientFundsException e) {
+                    // printing the message from InsufficientFundsException object
+                    System.out.println("InsufficientFunds : " +e.getMessage());
+
+                }
 
             } else if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
                 //do finish transaction
