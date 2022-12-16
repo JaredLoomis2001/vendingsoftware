@@ -128,7 +128,7 @@ public class PurchaseProcess {
         // Turns big decimal in to a double and then into a number easier to subtract from
         // Now the balance is turned into a whole number which will give more precise coins
         double coins = change.doubleValue() * 100;
-        // try {
+         try {
         while (coins > 0) {
             if (coins >= 25) {
                 quarters++;
@@ -147,11 +147,11 @@ public class PurchaseProcess {
             }
 
         }
-        //  }
+         }
         // trying to catch any errors that might occur dispensing change
-        // catch (Exception e){
-        //   System.out.println("There was an error dispensing your change");
-        //  }
+        catch (Exception e){
+          System.out.println("There was an error dispensing your change");
+         }
 
         System.out.println("Dispensing Change: " + quarters + " Quarter(s) | " + dimes + " Dime(s) | " + nickels + " Nickel(s) | " + penny + " Penny(s)");
         // needs setBalance to return balance to 0
