@@ -117,6 +117,7 @@ public class PurchaseProcess {
                 int moneyFed = 0;
             try {
                 moneyFed = in.nextInt();
+                in.next();
                 if (moneyFed < 0) {
                     moneyFed = 0;
                     throw new NumberFormatException();
