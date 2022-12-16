@@ -124,10 +124,16 @@ public class PurchaseProcess {
             } catch (InputMismatchException e) {
                 moneyFed = 0;
                 System.out.println("ERR : Please do not input a non-integer character.");
+                // Clear input if error occurs
                 in.next();
             } catch (NumberFormatException e) {
                 moneyFed = 0;
                 System.out.println("ERR : Machine does not accept negative dollars nor non-whole dollar amounts.");
+            } finally {
+                // Clear non integer input from in
+                if (in.hasNextLine()) {
+                    in.nextLine();
+                }
             }
 
 
