@@ -56,7 +56,7 @@ public class PurchaseProcess {
             else {
 
                 //Display details of the item selected by customer
-                System.out.printf("%-4s%-22s$%-6.2f\n", prod.getSlotID(), prod.getName(), prod.getPrice());
+                System.out.printf("%-22s$%-6.2f%-6s\n", prod.getName(), prod.getPrice(), vendingMachineBalance.balanceString());
 
                 if ((prod.getPrice().compareTo(vendingMachineBalance.getCurrentBalance()) < 1)) {
                     //Update the stock details of the item selected by customer
