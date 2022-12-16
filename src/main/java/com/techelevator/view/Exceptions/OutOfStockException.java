@@ -1,4 +1,4 @@
-package com.techelevator.view;
+package com.techelevator.view.Exceptions;
 
 public class OutOfStockException extends Exception {
 

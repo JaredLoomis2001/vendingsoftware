@@ -1,5 +1,9 @@
 package com.techelevator.view;
 
+import com.techelevator.view.Exceptions.InsufficientFundsException;
+import com.techelevator.view.Exceptions.InvalidSlotIdException;
+import com.techelevator.view.Exceptions.OutOfStockException;
+
 import java.io.*;
 import java.math.BigDecimal;
 import java.text.NumberFormat;

@@ -1,15 +1,8 @@
-package com.techelevator.view;
+package com.techelevator.view.Exceptions;
 
 import java.text.NumberFormat;
 
 public class InvalidMoneyException extends NumberFormatException{
-
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    private String message = "You must feed money in whole dollar amounts.";
 
     public InvalidMoneyException () {
         super();
@@ -18,4 +11,5 @@ public class InvalidMoneyException extends NumberFormatException{
     public InvalidMoneyException (String message) {
         super(message);
     }
+
 }

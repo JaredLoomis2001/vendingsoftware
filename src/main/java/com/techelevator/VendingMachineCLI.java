@@ -1,11 +1,13 @@
 package com.techelevator;
 
 import com.techelevator.view.*;
+import com.techelevator.view.Exceptions.InsufficientFundsException;
+import com.techelevator.view.Exceptions.InvalidSlotIdException;
+import com.techelevator.view.Exceptions.OutOfStockException;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.util.Locale;
 
 public class VendingMachineCLI {
 
