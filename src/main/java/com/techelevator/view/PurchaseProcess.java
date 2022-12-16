@@ -112,8 +112,13 @@ public class PurchaseProcess {
     }
 
     public int getFedMoney() {
-        out.println(System.lineSeparator() + "Please give the amount you wish to feed in format (0.00): ");
-        int moneyFed = Integer.parseInt(in.nextLine());
+        out.println(System.lineSeparator() + "Please give the amount you wish to feed in whole dollar amounts: ");
+        int moneyFed = 0;
+        try {
+            moneyFed = Integer.parseInt(in.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("ERR : Please do not input a non-integer character.");
+        }
         return moneyFed;
     }
 

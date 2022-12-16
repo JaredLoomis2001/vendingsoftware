@@ -11,6 +11,7 @@ import java.text.NumberFormat;
 
 public class VendingMachineCLI {
 
+
     private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
     private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
 
