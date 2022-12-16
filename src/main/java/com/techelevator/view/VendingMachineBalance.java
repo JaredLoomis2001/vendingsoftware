@@ -23,14 +23,8 @@ public class VendingMachineBalance {
 
     public void feedMoney(BigDecimal amountFed) {
 
-        try {
-            if (amountFed.compareTo(BigDecimal.valueOf(1)) < 0) {
-                throw new NumberFormatException();
-            }
             this.currentBalance = currentBalance.add(amountFed);
-        } catch (NumberFormatException e) {
-            System.out.println("ERR : Machine does not accept negative dollars nor non-whole dollar amounts.");
-        }
+
     }
 
     //Update customer balance,subtract the price of item from customer balance

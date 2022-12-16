@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -113,12 +114,23 @@ public class PurchaseProcess {
 
     public int getFedMoney() {
         out.println(System.lineSeparator() + "Please give the amount you wish to feed in whole dollar amounts: ");
-        int moneyFed = 0;
-        try {
-            moneyFed = Integer.parseInt(in.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("ERR : Please do not input a non-integer character.");
-        }
+                int moneyFed = 0;
+            try {
+                moneyFed = in.nextInt();
+                if (moneyFed < 0) {
+                    moneyFed = 0;
+                    throw new NumberFormatException();
+                }
+            } catch (InputMismatchException e) {
+                moneyFed = 0;
+                System.out.println("ERR : Please do not input a non-integer character.");
+            } catch (NumberFormatException e) {
+                moneyFed = 0;
+                System.out.println("ERR : Machine does not accept negative dollars nor non-whole dollar amounts.");
+            }
+
+
+
         return moneyFed;
     }
 
