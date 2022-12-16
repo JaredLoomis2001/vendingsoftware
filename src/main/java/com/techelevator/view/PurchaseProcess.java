@@ -117,7 +117,6 @@ public class PurchaseProcess {
                 int moneyFed = 0;
             try {
                 moneyFed = in.nextInt();
-                in.next();
                 if (moneyFed < 0) {
                     moneyFed = 0;
                     throw new NumberFormatException();
@@ -125,6 +124,7 @@ public class PurchaseProcess {
             } catch (InputMismatchException e) {
                 moneyFed = 0;
                 System.out.println("ERR : Please do not input a non-integer character.");
+                in.next();
             } catch (NumberFormatException e) {
                 moneyFed = 0;
                 System.out.println("ERR : Machine does not accept negative dollars nor non-whole dollar amounts.");
