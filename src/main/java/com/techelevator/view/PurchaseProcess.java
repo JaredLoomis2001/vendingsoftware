@@ -149,7 +149,10 @@ public class PurchaseProcess {
 
         return moneyFed;
     }
-
+    /* Method to Dispense Change back to the customer as well as reset the balance for the vending machine
+       finish transaction doesn't affect the other classes in any way it only takes in balance, returns change and sets
+       the balance of vending machine back to 0 so that the next customer can be processed.
+     */
     public void finishTransaction(VendingMachineBalance vendingMachineBalance) {
 
         BigDecimal change = vendingMachineBalance.getCurrentBalance();
@@ -166,7 +169,7 @@ public class PurchaseProcess {
          */
         double coins = change.doubleValue() * 100;
         try {
-            // An incrementing and subtracting system to find the correct change based on the value of coin down to the smallest value0
+            // An incrementing and subtracting system to find the correct change based on the value of coin down to the smallest value 0
 
             while (coins > 0) {
                 if (coins >= 25) {
