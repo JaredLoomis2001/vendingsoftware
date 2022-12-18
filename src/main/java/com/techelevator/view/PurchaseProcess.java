@@ -153,15 +153,21 @@ public class PurchaseProcess {
     public void finishTransaction(VendingMachineBalance vendingMachineBalance) {
 
         BigDecimal change = vendingMachineBalance.getCurrentBalance();
+
         String changeString = vendingMachineBalance.balanceString();
+
         int nickels = 0;
         int quarters = 0;
         int dimes = 0;
         int penny = 0;
-        // Turns big decimal in to a double and then into a number easier to subtract from
-        // Now the balance is turned into a whole number which will give more precise coins
+
+         /* Turns big decimal in to a double and then into a number easier to subtract from.
+         Now the balance is turned into a whole number which will give more precise coins
+         */
         double coins = change.doubleValue() * 100;
         try {
+            // An incrementing and subtracting system to find the correct change based on the value of coin down to the smallest value0
+
             while (coins > 0) {
                 if (coins >= 25) {
                     quarters++;
@@ -185,14 +191,15 @@ public class PurchaseProcess {
         catch (Exception e) {
             System.out.println("There was an error dispensing your change");
         }
-
+        // Reads out the change after the finished transaction
         System.out.println("Dispensing Change: " + quarters + " Quarter(s) | " + dimes + " Dime(s) | " + nickels + " Nickel(s) | " + penny + " Penny(s)");
-        // needs setBalance to return balance to 0
+
+        // After the change has been dispensed the customers balance is reset to 0 for the next transaction
         vendingMachineBalance.setCurrentBalance(BigDecimal.valueOf(0.00));
         System.out.println("Your balance is now: " + vendingMachineBalance.balanceString());
 
-        //log transaction to log.txt
-        PurchaseProcess.logTransaction(" GIVE CHANGE : " + changeString + " " + vendingMachineBalance.balanceString());
+        //Logs finish transaction after the change has been given
+        PurchaseProcess.logTransaction(" GIVE CHANGE: " + changeString + " " + vendingMachineBalance.balanceString());
 
 
     }
@@ -213,13 +220,15 @@ public class PurchaseProcess {
             File logFile = new File("Log.txt");
 
             if (!logFile.exists())
+                // If the file doesn't exist this creates it, just in case someone accidentally deletes the log file
                 logFile.createNewFile();
             if (dataOutput == null) {
+
                 dataOutput = new PrintWriter(
                         // Passing true to the FileOutputStream constructor says to append
                         new FileOutputStream(logFile, true));
             }
-
+            // DateFormat.format(date) enters the current date and time in the pattern we designated in simple date format
             dataOutput.print(dateFormat.format(date));
             dataOutput.println(" " + message);
             dataOutput.flush();
@@ -227,6 +236,7 @@ public class PurchaseProcess {
 
         } catch (FileNotFoundException e) {
             System.err.println("Exception  :" + e.getMessage());
+
         } catch (Exception exception) {
             System.err.println("Exception  :" + exception.getMessage());
         }
