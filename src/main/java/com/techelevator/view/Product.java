@@ -1,25 +1,34 @@
 package com.techelevator.view;
+/**
+ * Creates a Product object that has the following variables:
+ *  slotID >>    The product's location in the vending machine
+ *  name >>      The product's name
+ *  price >>     How much the product costs
+ *  type >>      Whether the product is a candy, a chip, a drink, or a gum
+ *  inStock >>   The product's current quantity within the machine
+ *
+ * Contains one constructor.
+ *
+ * Contains two methods (descriptions provided in code):
+ *  printProductInfo()
+ *  updateStockInfo()
+ *
+ */
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-/* This class is used to create Product objects. A constructor is provided to set each product's
-* slotID within the vending machine, its name, its price, and its type. All products start with 5 items
-* in stock, and a numSold variable to be used as a counter to keep track of how many of that item has been sold.
-*
-*  The printProductInfo method output's a product's slotID, name, price, and current quantity to the user.*/
-
 public class Product {
+    private final static int STARTING_STOCK = 5; /* Used to set each Product's starting quantity to 5 */
+
     private String slotID;
     private String name;
     private BigDecimal price;
     private String type;
-    private final static int STARTING_STOCK = 5; // Sets starting quantity to 5
-    private int numSold = 0; // Used to keep track of how much of a product has been sold
     private int inStock;
 
     public Product(String slotID, String name, BigDecimal price, String type) {
-        // Objects.requireNonNull throws a NullPointerException if the Object contains a null value
+        /* Objects.requireNonNull throws a NullPointerException if the Object contains a null value */
         this.slotID = Objects.requireNonNull(slotID, "Slot ID can't be null or empty.");
         this.name = Objects.requireNonNull(name, "Name can't be null or empty.");
         this.price = Objects.requireNonNull(price, "Price can't be null or empty.");
@@ -27,8 +36,9 @@ public class Product {
         this.inStock = STARTING_STOCK;
     }
 
-    public void printProductInfo(){
-        // Prints a product's slotID, name, price, and current stock
+
+    // Prints a line of text containing the Product's slotID, name, price, and current stock
+    public void printProductInfo() {
         if (inStock >= 1) {
             System.out.printf("%-4s%-22s$%-6.2f%5d\n", slotID, name, price, inStock);
         } else {
@@ -36,11 +46,10 @@ public class Product {
         }
     }
 
-    //Update stock details when dispensing product from vending machine
+    // Updates stock details when dispensing Product from vending machine
     public void updateStockInfo() {
         if (inStock > 0) {
             inStock--;
-            numSold++;
         }
     }
 
@@ -65,13 +74,10 @@ public class Product {
         return inStock;
     }
 
-    // Setters (inStock and numSold should be the only variables that change)
+    // Setters
     public void setInStock(int inStock) {
         this.inStock = inStock;
     }
 
-    public void setNumSold(int numSold) {
-        this.numSold = numSold;
-    }
 }
 
