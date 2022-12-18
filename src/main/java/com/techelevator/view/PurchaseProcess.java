@@ -14,17 +14,20 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class PurchaseProcess {
+    // PrintWriter object for logging transaction to log.file is created
+    private static PrintWriter dataOutput = null;
+
+    //Class variables to get input and display output
     private PrintWriter out;
     private Scanner in;
 
-    private static PrintWriter dataOutput = null;// PrintWriter object for logging is created
 
     public PurchaseProcess(InputStream input, OutputStream output) {
         this.out = new PrintWriter(output, true);
         this.in = new Scanner(input);
     }
 
-    /*Implement purchase process
+    /*Implement purchase process in method purchaseProduct
     1.Show the list of products available and allow the vendingMachineBalance to enter a code to select an item.
     2.If the product code doesn't exist, the vending machine informs the vendingMachineBalance
     3.If a product is currently sold out, the vending machine informs the vendingMachineBalance
@@ -40,8 +43,10 @@ public class PurchaseProcess {
         out.println(System.lineSeparator() + "Enter the code of item to be dispensed");
         String code = in.nextLine();
 
+        // Get product details from itemMap
         Map<String, Product> itemMap = inventory.getProducts();
 
+        //If the itemMap does not have the item,throw exception "Invalid slotid"
         if (!itemMap.containsKey(code.toLowerCase())) {
             throw new InvalidSlotIdException("Invalid slotID : " + code + " .Enter valid slotID");
 
@@ -50,7 +55,7 @@ public class PurchaseProcess {
 
             //Throw out of stock exception ,if the item is not in stock
             if (prod.getStock() < 1)
-                throw new OutOfStockException(prod.getName() +" is out of stock");
+                throw new OutOfStockException(prod.getName() + " is out of stock");
 
                 //Do the below process only if item is in stock
             else {
@@ -58,6 +63,7 @@ public class PurchaseProcess {
                 //Display details of the item selected by customer
                 System.out.printf("%-22s$%-6.2f%-6s\n", prod.getName(), prod.getPrice(), vendingMachineBalance.balanceString());
 
+                // If customer provided enough money Proceed with Transaction
                 if ((prod.getPrice().compareTo(vendingMachineBalance.getCurrentBalance()) < 1)) {
                     //Update the stock details of the item selected by customer
                     prod.updateStockInfo();
@@ -112,31 +118,34 @@ public class PurchaseProcess {
 
     }
 
+    /* Method to implement Feed  Money option in submenu.
+     * Customer can feed money ,only in whole dollar amounts
+     * into vending machine repeatedly using this option
+     */
     public int getFedMoney() {
         out.println(System.lineSeparator() + "Please give the amount you wish to feed in whole dollar amounts: ");
-                int moneyFed = 0;
-            try {
-                moneyFed = in.nextInt();
-                if (moneyFed < 0) {
-                    moneyFed = 0;
-                    throw new NumberFormatException();
-                }
-            } catch (InputMismatchException e) {
+        int moneyFed = 0;
+        try {
+            moneyFed = in.nextInt();
+            // If negative number is entered by customer , throw exception
+            if (moneyFed < 0) {
                 moneyFed = 0;
-                System.out.println("ERR : Please do not input a non-integer character.");
-                // Clear input if error occurs
-                in.next();
-            } catch (NumberFormatException e) {
-                moneyFed = 0;
-                System.out.println("ERR : Machine does not accept negative dollars nor non-whole dollar amounts.");
-            } finally {
-                // Clear non integer input from in
-                if (in.hasNextLine()) {
-                    in.nextLine();
-                }
+                throw new NumberFormatException();
             }
-
-
+        } catch (InputMismatchException e) {
+            moneyFed = 0;
+            System.out.println("ERR : Please do not input a non-integer character.");
+            // Clear input if error occurs
+            in.next();
+        } catch (NumberFormatException e) {
+            moneyFed = 0;
+            System.out.println("ERR : Machine does not accept negative dollars nor non-whole dollar amounts.");
+        } finally {
+            // Clear non integer input from in
+            if (in.hasNextLine()) {
+                in.nextLine();
+            }
+        }
 
         return moneyFed;
     }
@@ -152,30 +161,30 @@ public class PurchaseProcess {
         // Turns big decimal in to a double and then into a number easier to subtract from
         // Now the balance is turned into a whole number which will give more precise coins
         double coins = change.doubleValue() * 100;
-         try {
-        while (coins > 0) {
-            if (coins >= 25) {
-                quarters++;
-                coins -= 25;
-            } else if (coins >= 10) {
-                dimes++;
-                coins -= 10;
-            } else if (coins >= 5) {
-                nickels++;
-                coins -= 5;
-            } else if (coins >= 1) {
-                penny++;
-                coins -= 1;
-            } else {
-                coins = 0;
-            }
+        try {
+            while (coins > 0) {
+                if (coins >= 25) {
+                    quarters++;
+                    coins -= 25;
+                } else if (coins >= 10) {
+                    dimes++;
+                    coins -= 10;
+                } else if (coins >= 5) {
+                    nickels++;
+                    coins -= 5;
+                } else if (coins >= 1) {
+                    penny++;
+                    coins -= 1;
+                } else {
+                    coins = 0;
+                }
 
+            }
         }
-         }
         // trying to catch any errors that might occur dispensing change
-        catch (Exception e){
-          System.out.println("There was an error dispensing your change");
-         }
+        catch (Exception e) {
+            System.out.println("There was an error dispensing your change");
+        }
 
         System.out.println("Dispensing Change: " + quarters + " Quarter(s) | " + dimes + " Dime(s) | " + nickels + " Nickel(s) | " + penny + " Penny(s)");
         // needs setBalance to return balance to 0
@@ -202,6 +211,7 @@ public class PurchaseProcess {
         try {
 
             File logFile = new File("Log.txt");
+
             if (!logFile.exists())
                 logFile.createNewFile();
             if (dataOutput == null) {

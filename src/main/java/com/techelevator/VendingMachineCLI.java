@@ -11,12 +11,14 @@ import java.text.NumberFormat;
 
 public class VendingMachineCLI {
 
-
+    /* Main Menu Display options */
     private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
     private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
 
     private static final String MAIN_MENU_OPTION_EXIT = "Exit";
     private static final String[] MAIN_MENU_OPTIONS = {MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT};
+
+    //Sub menu display options
     private static final String PURCHASE_MENU_FEED_MONEY = "Feed Money";
     private static final String PURCHASE_MENU_SELECT = "Select Product";
     private static final String PURCHASE_MENU_FINISH_TRANSACTION = "Finish Transaction";
@@ -24,12 +26,15 @@ public class VendingMachineCLI {
 
 
     private Menu menu;
-    private File dataFile = new File("vendingmachine.csv"); // CSV File
+    private File dataFile = new File("vendingmachine.csv"); // CSV File where product info is stored
     private Inventory inv = new Inventory(dataFile); // Inventory made with CSV File
 
-    private PurchaseProcess purchaseProcess = new PurchaseProcess(System.in, System.out); //Purchase process Implementation
+    //Purchase process Implementation
+    private PurchaseProcess purchaseProcess = new PurchaseProcess(System.in, System.out);
 
-    private VendingMachineBalance vendingMachineBalance = new VendingMachineBalance(); //new vendingMachineBalance to hold balance for purchases
+    //new vendingMachineBalance to hold balance for purchases
+    private VendingMachineBalance vendingMachineBalance = new VendingMachineBalance();
+
 
     public VendingMachineCLI(Menu menu) {
         this.menu = menu;
@@ -52,24 +57,25 @@ public class VendingMachineCLI {
     }
 
 
+    //Display the purchase menu and return to Main menu after finish transaction
+    //Call methods to implement purchase process
     public void displayPurchaseMenu() {
 
         while (true) {
 
             System.out.println("\nCurrent money provided: " + vendingMachineBalance.balanceString());
 
-            // do purchase
+            // Do purchase
             String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
-            //check if user wants to feed money in
-            //also having difficulty thinking how to display the current balance above the menu as it is shown in the
-            // example in the README as well as how to go about looping back to the purchase menu after depositing
-            // to the balance
+            // User feeding money into vending machine,this can be done repeatedly by user
+            // Vending machine balance also needs to be updated accordingly
             if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {
                 BigDecimal money = new BigDecimal(purchaseProcess.getFedMoney());
+                //Updating vending machine balance
                 vendingMachineBalance.feedMoney(money);
 
-                //log all transactions to Log.txt
+                //log all transactions to Log.txt,format currency before logging
                 NumberFormat nf = NumberFormat.getCurrencyInstance();
                 double balance = money.doubleValue();
                 String currency = nf.format(balance);
@@ -87,17 +93,17 @@ public class VendingMachineCLI {
                     purchaseProcess.purchaseProduct(inv, vendingMachineBalance);
                 } catch (InsufficientFundsException e) {
                     // printing the message from InsufficientFundsException object
-                    System.out.println("INSUFFICIENT FUNDS : " +e.getMessage());
+                    System.out.println("INSUFFICIENT FUNDS : " + e.getMessage());
 
                 } catch (OutOfStockException exc) {
-                    System.out.println("ITEM OUT OF STOCK : " +exc.getMessage());
-                } catch (InvalidSlotIdException excption) {
-                    System.out.println("INVALID SLOTID ENTERED : " +excption.getMessage());
+                    System.out.println("ITEM OUT OF STOCK : " + exc.getMessage());
+                } catch (InvalidSlotIdException exception) {
+                    System.out.println("INVALID SLOT-ID ENTERED : " + exception.getMessage());
 
                 }
 
             } else if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
-                //do finish transaction
+                //Finish transaction
                 purchaseProcess.finishTransaction(vendingMachineBalance);
                 //Return to Main menu
                 return;
