@@ -10,19 +10,14 @@ public class VendingMachineBalance {
     private BigDecimal currentBalance;
 
     public VendingMachineBalance() {
+        //Defaults the balance to zero as there has been no money inputted
+
         this.currentBalance = new BigDecimal(0.00);
     }
 
-    public BigDecimal getCurrentBalance() {
-        return currentBalance;
-    }
-
-    public void setCurrentBalance(BigDecimal currentBalance) {
-        this.currentBalance = currentBalance;
-    }
 
     public void feedMoney(BigDecimal amountFed) {
-
+        //sets and stores the amount desired to feed in to currentBalance to be called upon easier and reduce magic numbers
             this.currentBalance = currentBalance.add(amountFed);
 
     }
@@ -41,5 +36,11 @@ public class VendingMachineBalance {
         String currency = nf.format(balance);
         return currency;
     }
+    public BigDecimal getCurrentBalance() {
+        return currentBalance;
+    }
 
+    public void setCurrentBalance(BigDecimal currentBalance) {
+        this.currentBalance = currentBalance;
+    }
 }
