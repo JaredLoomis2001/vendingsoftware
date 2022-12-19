@@ -17,8 +17,9 @@ public class VendingMachineBalance {
 
 
     public void feedMoney(BigDecimal amountFed) {
-        //sets and stores the amount desired to feed in to currentBalance to be called upon easier and reduce magic numbers
-            this.currentBalance = currentBalance.add(amountFed);
+        //sets and stores the amount desired to feed in to currentBalance to be called upon easier and reduce magic
+        // numbers
+        this.currentBalance = currentBalance.add(amountFed);
 
     }
 
@@ -26,7 +27,7 @@ public class VendingMachineBalance {
     public void purchaseItem(BigDecimal priceOfItem) {
         //Transaction takes place ,Only if balance is available
         if (priceOfItem.compareTo(this.currentBalance) <= 0)
-            this.currentBalance =(currentBalance.subtract(priceOfItem));
+            this.currentBalance = (currentBalance.subtract(priceOfItem));
     }
 
     // Change balance to a currency formatted string
@@ -36,6 +37,7 @@ public class VendingMachineBalance {
         String currency = nf.format(balance);
         return currency;
     }
+
     public BigDecimal getCurrentBalance() {
         return currentBalance;
     }
