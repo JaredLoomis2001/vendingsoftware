@@ -1,5 +1,21 @@
 package com.techelevator.view;
 
+/**
+ * Implementation of purchase menu:
+ * dataOutput >>    static printwriter object to write to logfile
+ * out >>      instance variable of printwriter type to print output
+ * in >>     instance variable of scanner type to get user input
+ * <p>
+ * Contains one constructor.
+ * <p>
+ * Contains five methods (descriptions provided in code):
+ * purchaseProduct
+ * printMessage
+ * getFedMoney
+ * finishTransaction
+ * logTransaction
+ */
+
 import com.techelevator.view.Exceptions.InsufficientFundsException;
 import com.techelevator.view.Exceptions.InvalidSlotIdException;
 import com.techelevator.view.Exceptions.OutOfStockException;
@@ -149,6 +165,7 @@ public class PurchaseProcess {
 
         return moneyFed;
     }
+
     /* Method to Dispense Change back to the customer as well as reset the balance for the vending machine
        finish transaction doesn't affect the other classes in any way it only takes in balance, returns change and sets
        the balance of vending machine back to 0 so that the next customer can be processed.

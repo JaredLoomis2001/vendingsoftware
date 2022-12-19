@@ -1,5 +1,13 @@
 package com.techelevator;
 
+/**
+ * VendingMachineCLI is the Main class calling main method:
+ * Contains three methods (descriptions provided in code):
+ * run
+ * displayPurchaseMenu
+ * main
+ */
+
 import com.techelevator.view.*;
 import com.techelevator.view.Exceptions.InsufficientFundsException;
 import com.techelevator.view.Exceptions.InvalidSlotIdException;
@@ -40,6 +48,7 @@ public class VendingMachineCLI {
         this.menu = menu;
     }
 
+    //Display main menu and call the appropriate method according to user input
     public void run() {
         while (true) {
             String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
